@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import streamlit as st
 
 st.set_page_config(layout="wide",)
@@ -14,7 +13,8 @@ tab1, tab2, tab3 = st.tabs(["Global Overview", "Country Deep Dive", "Data Explor
 with tab3:
     selection_country = st.multiselect("select country", options=global_dataset.country.unique(), default=global_dataset.country.unique())
 
-    year1, year2 = st.slider(label="Select range of years", min_value=np.min(global_dataset.year), max_value=np.max(global_dataset.year))
+    year_min, year_max = int(global_dataset["year"].min()), int(global_dataset["year"].max())
+    year_range = st.slider("Select year range", min_value=year_min, max_value=year_max, value=(year_min, year_max), step=1)
 
     frame_data = global_dataset.query(f"country == {selection_country}")
     st.dataframe(data=frame_data, width="stretch")
